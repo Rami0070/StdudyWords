@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本子 - 원어민 발음 듣기</title>
+    <style>
+        :root {
+            --primary: #1F7A8C;
+            --accent: #D95D39;
+            --dark: #1E242B;
+            --bg: #FAF8F5;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body {
+            background-color: var(--bg);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(30, 36, 43, 0.12);
+            padding: 2.2rem 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            border: 2px solid #EAE5DE;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #EDF6F9;
+            color: var(--primary);
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 1.2rem;
+        }
+        .word {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.4rem;
+            line-height: 1.2;
+        }
+        .pron {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .meaning-box {
+            background: #FAF8F5;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+            border: 1px solid #ECE7DE;
+        }
+        .meaning-title {
+            font-weight: 800;
+            color: var(--dark);
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+        .wave-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            height: 36px;
+            margin-bottom: 1.5rem;
+        }
+        .wave-bar {
+            width: 5px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 3px;
+        }
+        .wave-bar.active {
+            animation: bounce 0.6s infinite ease-in-out alternate;
+        }
+        .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(2) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.5s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            from { height: 8px; }
+            to { height: 32px; background-color: var(--accent); }
+        }
+        .main-speak-btn {
+            border: none;
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 16px rgba(31, 122, 140, 0.35);
+            margin-bottom: 1.2rem;
+            animation: pulse-border 1.8s infinite;
+        }
+        @keyframes pulse-border {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(31, 122, 140, 0.5); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 12px rgba(31, 122, 140, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(31, 122, 140, 0); }
+        }
+        .main-speak-btn:hover {
+            background-color: #16606e;
+            transform: scale(1.04);
+        }
+        .speed-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        .speed-btn {
+            background: none;
+            border: 1px solid #CCC;
+            padding: 4px 9px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.82rem;
+        }
+        .speed-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: 700;
+        }
+        .footer-links {
+            border-top: 1px solid #EAE5DE;
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        .credit-watermark {
+            position: fixed;
+            right: 16px;
+            bottom: 12px;
+            font-size: 0.75rem;
+            color: rgba(30, 36, 43, 0.35);
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            pointer-events: none;
+            user-select: none;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+
+<audio id="nativeAudio" src="../audio/22_cn.mp3" preload="auto"></audio>
+
+<div class="card" onclick="playAudio()">
+    <div class="badge">🇨🇳 중국어 (No. 22)</div>
+    <div class="word" id="wordDisplay">本子</div>
+    <div class="pron" id="pronDisplay">[번즈] Běnzi</div>
+
+    <div class="meaning-box">
+        <div class="meaning-title">공책</div>
+        <div>수업 내용이나 알림장 등을 글씨로 적어 두는 노트</div>
+    </div>
+
+    <div class="wave-container" id="waveContainer">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+    </div>
+
+    <div>
+        <button class="main-speak-btn" onclick="event.stopPropagation(); playAudio();">
+            🔊 원어민 발음 듣기
+        </button>
+    </div>
+
+    <div class="speed-control" onclick="event.stopPropagation()">
+        <span>재생 속도:</span>
+        <button class="speed-btn" onclick="setSpeed(0.8)">0.8x (천천히)</button>
+        <button class="speed-btn active" onclick="setSpeed(1.0)">1.0x (보통)</button>
+        <button class="speed-btn" onclick="setSpeed(1.2)">1.2x (빠르게)</button>
+    </div>
+
+    <div class="footer-links" onclick="event.stopPropagation()">
+        <a href="../index.html">📖 단어장 전체 보기</a>
+        <a href="javascript:window.close()">✖ 창 닫기</a>
+    </div>
+</div>
+
+<script>
+const audioElem = document.getElementById('nativeAudio');
+const TEXT_TO_SPEAK = "本子";
+const LANG_CODE = "zh-CN";
+let currentSpeed = 1.0;
+
+function setWaveActive(active) {
+    document.querySelectorAll('.wave-bar').forEach(b => b.classList.toggle('active', active));
+}
+
+function setSpeed(speed) {
+    currentSpeed = speed;
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+        btn.classList.toggle('active', parseFloat(btn.textContent) === speed);
+    });
+    audioElem.playbackRate = speed;
+    playAudio();
+}
+
+function playAudio() {
+    setWaveActive(true);
+    audioElem.playbackRate = currentSpeed;
+    audioElem.currentTime = 0;
+    
+    audioElem.play().catch(err => {
+        console.log("Audio play blocked/failed, trying TTS fallback:", err);
+        fallbackTTS();
+    });
+}
+
+function fallbackTTS() {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(TEXT_TO_SPEAK);
+    u.lang = LANG_CODE;
+    u.rate = currentSpeed;
+    u.onend = () => setWaveActive(false);
+    u.onerror = () => setWaveActive(false);
+    window.speechSynthesis.speak(u);
+}
+
+audioElem.onended = () => setWaveActive(false);
+audioElem.onerror = () => {
+    console.warn("Audio file error, falling back to TTS");
+    fallbackTTS();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(playAudio, 250);
+});
+
+// 브라우저 어디든 첫 클릭 시 소리 재생
+document.addEventListener('click', function firstClick() {
+    playAudio();
+    document.removeEventListener('click', firstClick);
+}, { once: true });
+</script>
+
+<div class="credit-watermark">Designed by Rami since 2026</div>
+</body>
+</html>

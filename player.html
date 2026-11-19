@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단어 발음 재생기</title>
+    <style>
+        :root {
+            --bg-color: #FAF8F5;
+            --primary: #1F7A8C;
+            --accent: #D95D39;
+            --dark: #1E242B;
+            --card-bg: #FFFFFF;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .player-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(30, 36, 43, 0.1);
+            padding: 2.5rem 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            border: 2px solid #EAE5DE;
+        }
+        .lang-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #EDF6F9;
+            color: var(--primary);
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 1.2rem;
+        }
+        .word-display {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+            min-height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pronunciation-display {
+            font-size: 1.15rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1.8rem;
+        }
+        .wave-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            height: 40px;
+            margin-bottom: 1.8rem;
+        }
+        .wave-bar {
+            width: 5px;
+            height: 12px;
+            background-color: var(--primary);
+            border-radius: 3px;
+            transition: height 0.2s ease;
+        }
+        .wave-bar.active {
+            animation: bounce 0.6s infinite ease-in-out alternate;
+        }
+        .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(2) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.5s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            from { height: 10px; }
+            to { height: 36px; background-color: var(--accent); }
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .btn {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(31, 122, 140, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #16606e;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #F0EDE8;
+            color: var(--dark);
+        }
+        .btn-secondary:hover {
+            background-color: #E2DDD5;
+        }
+        .speed-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        .speed-btn {
+            background: none;
+            border: 1px solid #CCC;
+            padding: 3px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .speed-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: 700;
+        }
+        .footer-links {
+            border-top: 1px solid #EAE5DE;
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        .credit-watermark {
+            position: fixed;
+            right: 16px;
+            bottom: 12px;
+            font-size: 0.75rem;
+            color: rgba(30, 36, 43, 0.35);
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            pointer-events: none;
+            user-select: none;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+
+<div class="player-card">
+    <div class="lang-badge" id="langBadge">🌐 언어 로딩 중...</div>
+    <div class="word-display" id="wordDisplay">-</div>
+    <div class="pronunciation-display" id="pronDisplay">발음 듣기 준비</div>
+
+    <div class="wave-container" id="waveContainer">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+    </div>
+
+    <div class="speed-control">
+        <span>재생 속도:</span>
+        <button class="speed-btn" onclick="setSpeed(0.8)">0.8x (천천히)</button>
+        <button class="speed-btn active" onclick="setSpeed(1.0)">1.0x (보통)</button>
+        <button class="speed-btn" onclick="setSpeed(1.2)">1.2x (빠르게)</button>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-primary" onclick="speakCurrent()">
+            🔊 다시 듣기
+        </button>
+    </div>
+
+    <div class="footer-links">
+        <a href="index.html">📖 단어장 전체 보기</a>
+        <a href="javascript:window.close()">✖ 창 닫기</a>
+    </div>
+</div>
+
+<script src="words.js"></script>
+<script>
+let currentSpeed = 1.0;
+let currentWordText = '';
+let currentLangCode = 'cn';
+let currentPron = '';
+
+function setSpeed(speed) {
+    currentSpeed = speed;
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+        btn.classList.toggle('active', parseFloat(btn.textContent) === speed);
+    });
+    speakCurrent();
+}
+
+function setWaveActive(active) {
+    const bars = document.querySelectorAll('.wave-bar');
+    bars.forEach(b => b.classList.toggle('active', active));
+}
+
+function playNativeAudio(text, languageCode, rate = 1.0) {
+    if (!('speechSynthesis' in window)) {
+        alert('이 브라우저는 음성 합성을 지원하지 않습니다.');
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+    setWaveActive(true);
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    switch(languageCode) {
+        case 'cn': utterance.lang = 'zh-CN'; break;
+        case 'vn': utterance.lang = 'vi-VN'; break;
+        case 'ph': utterance.lang = 'tl-PH'; break;
+        case 'ko': utterance.lang = 'ko-KR'; break;
+        default: utterance.lang = languageCode; break;
+    }
+    
+    utterance.rate = rate;
+
+    // 보이스 매칭
+    const voices = window.speechSynthesis.getVoices();
+    const matched = voices.find(v => v.lang.replace('_', '-') === utterance.lang || v.lang.startsWith(utterance.lang.slice(0, 2)));
+    if (matched) utterance.voice = matched;
+
+    utterance.onend = () => setWaveActive(false);
+    utterance.onerror = () => setWaveActive(false);
+
+    window.speechSynthesis.speak(utterance);
+}
+
+function speakCurrent() {
+    if (currentWordText) {
+        playNativeAudio(currentWordText, currentLangCode, currentSpeed);
+    }
+}
+
+// URL 파라미터 또는 해시값 파싱
+function parseUrlParams() {
+    let params = new URLSearchParams(window.location.search);
+    let hash = window.location.hash.substring(1);
+
+    // hash 형태도 지원 (예: #lang=cn&word=你好 또는 #cn:你好)
+    if (!params.get('word') && hash) {
+        if (hash.includes(':')) {
+            const parts = hash.split(':');
+            return { lang: parts[0], word: decodeURIComponent(parts[1] || ''), pron: decodeURIComponent(parts[2] || '') };
+        } else if (hash.includes('=')) {
+            params = new URLSearchParams(hash);
+        }
+    }
+
+    return {
+        num: params.get('num'),
+        lang: params.get('lang') || 'cn',
+        word: params.get('word') ? decodeURIComponent(params.get('word')) : '',
+        pron: params.get('pron') ? decodeURIComponent(params.get('pron')) : ''
+    };
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const data = parseUrlParams();
+
+    // 단어 번호가 있으면 words.js 데이터에서 검색
+    if (data.num && typeof WORDS_DATA !== 'undefined') {
+        const item = WORDS_DATA.find(w => w.num == data.num);
+        if (item) {
+            const langData = data.lang === 'cn' ? item.chinese : (data.lang === 'vn' ? item.vietnamese : item.filipino);
+            currentWordText = langData.native;
+            currentPron = langData.pronunciation ? `[${langData.pronunciation}]` : (langData.phonetic || '');
+        }
+    }
+
+    if (!currentWordText && data.word) {
+        currentWordText = data.word;
+        currentPron = data.pron;
+    }
+
+    currentLangCode = data.lang || 'cn';
+
+    const langNames = {
+        'cn': '🇨🇳 중국어 (Chinese)',
+        'vn': '🇻🇳 베트남어 (Vietnamese)',
+        'ph': '🇵🇭 필리핀어 (Tagalog)',
+        'ko': '🇰🇷 한국어 (Korean)'
+    };
+
+    document.getElementById('langBadge').textContent = langNames[currentLangCode] || currentLangCode;
+    document.getElementById('wordDisplay').textContent = currentWordText || '재생할 단어 없음';
+    document.getElementById('pronDisplay').textContent = currentPron || '';
+
+    if (currentWordText) {
+        // 브라우저에 음성 로드 후 자동 재생 시도
+        setTimeout(() => {
+            speakCurrent();
+        }, 300);
+    }
+});
+
+// 브라우저 보이스 로드 핸들러
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+    };
+}
+</script>
+
+<div class="credit-watermark">Designed by Rami since 2026</div>
+
+</body>
+</html>

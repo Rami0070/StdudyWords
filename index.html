@@ -1,0 +1,1106 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다문화 친구와 통하는 삼국 언어 단어장 - 원어민 발음 학습기</title>
+    <style>
+        :root {
+            --primary: #1F7A8C;
+            --primary-dark: #155562;
+            --accent: #D95D39;
+            --accent-hover: #BF4C2A;
+            --dark: #1E242B;
+            --bg: #F4F1EB;
+            --card-bg: #FFFFFF;
+            --border: #E5DFD5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--dark);
+            line-height: 1.5;
+            padding-bottom: 5rem;
+        }
+
+        /* 상단 헤더 */
+        header {
+            background: linear-gradient(135deg, #1E242B 0%, #2A3644 100%);
+            color: white;
+            padding: 2.2rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .header-badge {
+            display: inline-block;
+            background: rgba(217, 93, 57, 0.25);
+            color: #FF9E80;
+            border: 1px solid rgba(217, 93, 57, 0.5);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+        .header-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .header-desc {
+            font-size: 1rem;
+            color: #CFD8DC;
+            max-width: 800px;
+        }
+        .header-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 0.5rem;
+            align-items: center;
+        }
+        .btn-ppt-link {
+            background: #D95D39;
+            color: white;
+            padding: 9px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .btn-ppt-link:hover {
+            background: #BF4C2A;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 1200px;
+            margin: -1.2rem auto 0;
+            padding: 0 1rem;
+        }
+
+        /* 컨트롤 패널 */
+        .control-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 6px 20px rgba(30, 36, 43, 0.08);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .mode-and-search {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .view-modes {
+            display: flex;
+            background: #EAE6DF;
+            border-radius: 10px;
+            padding: 4px;
+            gap: 4px;
+        }
+        .mode-btn {
+            border: none;
+            background: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mode-btn.active {
+            background: white;
+            color: var(--primary-dark);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 380px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            border: 1.5px solid #D5CFC5;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        /* 영역 필터 탭 */
+        .domain-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tab-btn {
+            border: 1.5px solid #D5CFC5;
+            background: #FAF8F5;
+            color: var(--dark);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 3px 8px rgba(31, 122, 140, 0.3);
+        }
+
+        /* 오디오 글로벌 컨트롤 */
+        .audio-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .audio-settings {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .speed-selector {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .speed-btn {
+            background: #F0EDE8;
+            border: 1px solid #CCC;
+            padding: 4px 9px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .speed-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .auto-play-btn {
+            background: #FAF8F5;
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .auto-play-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+        .auto-play-btn.playing {
+            background: var(--accent);
+            color: white;
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(217, 93, 57, 0.5); }
+            70% { box-shadow: 0 0 0 10px rgba(217, 93, 57, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(217, 93, 57, 0); }
+        }
+
+        /* 상태 안내 */
+        .status-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.2rem 0 0.8rem;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* 1. 테이블 뷰 */
+        .table-view-container {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(30, 36, 43, 0.08);
+            border: 1px solid var(--border);
+        }
+        .words-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        .words-table th {
+            background-color: #1E242B;
+            color: white;
+            padding: 14px 16px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            letter-spacing: 0.3px;
+        }
+        .words-table td {
+            padding: 13px 16px;
+            border-bottom: 1px solid #ECE7DE;
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+        .words-table tr:nth-child(even) td {
+            background-color: #FAF8F5;
+        }
+        .words-table tr:hover td {
+            background-color: #F1ECE3;
+        }
+        .col-num {
+            width: 60px;
+            text-align: center;
+            font-weight: 800;
+            color: #777;
+        }
+        .col-ko {
+            width: 25%;
+            font-weight: 700;
+        }
+        .ko-word {
+            color: var(--dark);
+            font-size: 1.05rem;
+        }
+        .ko-meaning {
+            font-size: 0.82rem;
+            color: #666;
+            font-weight: normal;
+        }
+        .col-lang {
+            width: 23%;
+        }
+        .lang-cell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .lang-text-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .native-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #222;
+        }
+        .phonetic-text {
+            font-size: 0.82rem;
+            color: #444;
+        }
+        .pron-badge {
+            font-size: 0.82rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .speak-btn {
+            background: #FFFFFF;
+            border: 1.5px solid #D5CFC5;
+            color: #333;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .speak-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.08);
+        }
+        .speak-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            animation: bounce 0.5s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: scale(1.0); }
+            to { transform: scale(1.15); }
+        }
+
+        /* 2. 카드 그리드 뷰 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.2rem;
+        }
+        .word-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 1.3rem;
+            box-shadow: 0 4px 14px rgba(30, 36, 43, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .word-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(30, 36, 43, 0.1);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid #F0EDE8;
+            padding-bottom: 0.6rem;
+        }
+        .card-num {
+            background: #1E242B;
+            color: white;
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+        .card-domain {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .card-ko-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .card-ko-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 2px;
+        }
+        .card-lang-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .card-lang-item {
+            background: #FAF8F5;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #ECE7DE;
+        }
+
+        /* 3. 퀴즈 뷰 */
+        .quiz-container {
+            background: white;
+            border-radius: 18px;
+            padding: 2.5rem 2rem;
+            max-width: 600px;
+            margin: 1rem auto;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .quiz-badge {
+            display: inline-block;
+            background: #EDF6F9;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .quiz-prompt {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 1.2rem;
+        }
+        .quiz-sound-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 4px 12px rgba(31, 122, 140, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .quiz-sound-btn:hover {
+            background: var(--primary-dark);
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .quiz-opt-btn {
+            background: #FAF8F5;
+            border: 2px solid #E5DFD5;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-opt-btn:hover {
+            border-color: var(--primary);
+            background: #EDF6F9;
+        }
+        .quiz-opt-btn.correct {
+            background: #D4EDDA;
+            border-color: #28A745;
+            color: #155724;
+        }
+        .quiz-opt-btn.wrong {
+            background: #F8D7DA;
+            border-color: #DC3545;
+            color: #721C24;
+        }
+        .quiz-next-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            display: none;
+            margin: 0 auto;
+        }
+
+        /* 하단 고정 오디오 재생 바 */
+        .bottom-floating-bar {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 36, 43, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .floating-speaker {
+            color: #FF9E80;
+            font-size: 1.2rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .header-title { font-size: 1.4rem; }
+            .words-table th, .words-table td { padding: 10px 8px; font-size: 0.85rem; }
+            .col-lang { width: auto; }
+            .quiz-options { grid-template-columns: 1fr; }
+        }
+
+        /* 우측 하단 크레딧 */
+        .credit-watermark {
+            position: fixed;
+            right: 18px;
+            bottom: 12px;
+            font-size: 0.78rem;
+            color: rgba(30, 36, 43, 0.35);
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            pointer-events: none;
+            user-select: none;
+            z-index: 99;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="header-badge">초등학교 4학년 다문화 언어 교육</div>
+        <h1 class="header-title">다문화 친구와 통하는 삼국 언어 단어장</h1>
+        <p class="header-desc">
+            중국어 · 베트남어 · 필리핀어(타갈로그어) 6개 영역 100개 핵심 어휘 <strong>고음질 원어민 음성</strong> 학습기
+        </p>
+        <div class="header-actions">
+            <a class="btn-ppt-link" href="다문화 친구와 통하는 삼국 언어 단어장 (발음완전연결).pptx" download>
+                📥 발음 연결 PPT 다운로드 (.pptx)
+            </a>
+            <span style="font-size: 0.88rem; color: #CFD8DC;">
+                ✨ 기계식 TTS 대신 <strong>실제 원어민 오디오(MP3)</strong>가 연결되었습니다.
+            </span>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <!-- 컨트롤 패널 -->
+    <div class="control-panel">
+        <div class="mode-and-search">
+            <div class="view-modes">
+                <button class="mode-btn active" onclick="switchView('table')">📑 표 보기 (PPT 동일)</button>
+                <button class="mode-btn" onclick="switchView('cards')">🗂 카드 보기</button>
+                <button class="mode-btn" onclick="switchView('quiz')">🎯 발음 퀴즈</button>
+            </div>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="한국어, 원어, 발음 검색..." oninput="handleSearch()">
+            </div>
+        </div>
+
+        <!-- 영역 필터 탭 -->
+        <div class="domain-tabs">
+            <button class="tab-btn active" onclick="filterDomain(0)">전체 100단어</button>
+            <button class="tab-btn" onclick="filterDomain(1)">1영역 인사·예절 (1~15)</button>
+            <button class="tab-btn" onclick="filterDomain(2)">2영역 학교·교실 (16~35)</button>
+            <button class="tab-btn" onclick="filterDomain(3)">3영역 친구·놀이 (36~50)</button>
+            <button class="tab-btn" onclick="filterDomain(4)">4영역 감정·표현 (51~65)</button>
+            <button class="tab-btn" onclick="filterDomain(5)">5영역 숫자·시간 (66~80)</button>
+            <button class="tab-btn" onclick="filterDomain(6)">6영역 일상·사물 (81~100)</button>
+        </div>
+
+        <!-- 오디오 바 -->
+        <div class="audio-bar">
+            <div class="audio-settings">
+                <span>🔊 재생 속도:</span>
+                <div class="speed-selector">
+                    <button class="speed-btn" onclick="setSpeed(0.8)">0.8x (천천히)</button>
+                    <button class="speed-btn active" onclick="setSpeed(1.0)">1.0x (보통)</button>
+                    <button class="speed-btn" onclick="setSpeed(1.2)">1.2x (빠르게)</button>
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button id="autoPlayBtn" class="auto-play-btn" onclick="toggleAutoPlay()">
+                    ▶ 현재 목록 연속 듣기
+                </button>
+                <button class="auto-play-btn" style="border-color: #888; color: #555;" onclick="stopAudio()">
+                    ⏹ 정지
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상태 정보 -->
+    <div class="status-info">
+        <span id="resultCount">표시 중: 100개 단어</span>
+        <span id="currentStatusText" style="color: var(--primary);">스피커(🔊) 버튼을 누르면 원어민 발음(MP3)이 재생됩니다</span>
+    </div>
+
+    <!-- 1. 테이블 뷰 -->
+    <div id="tableView" class="table-view-container">
+        <table class="words-table">
+            <thead>
+                <tr>
+                    <th class="col-num">번호</th>
+                    <th class="col-ko">한국어 (의미)</th>
+                    <th class="col-lang">🇨🇳 중국어 (원어민 발음)</th>
+                    <th class="col-lang">🇻🇳 베트남어 (원어민 발음)</th>
+                    <th class="col-lang">🇵🇭 필리핀어 (원어민 발음)</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- 렌더링 -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 2. 카드 그리드 뷰 -->
+    <div id="cardsView" class="cards-grid" style="display: none;">
+        <!-- 렌더링 -->
+    </div>
+
+    <!-- 3. 퀴즈 뷰 -->
+    <div id="quizView" class="quiz-container" style="display: none;">
+        <div class="quiz-badge" id="quizDomainBadge">1영역 · 인사 및 예절</div>
+        <div class="quiz-prompt">원어민 소리를 잘 듣고, 알맞은 한국어 단어를 골라보세요!</div>
+        <div>
+            <button class="quiz-sound-btn" onclick="playQuizSound()">
+                🔊 원어민 발음 다시 듣기
+            </button>
+        </div>
+        <div class="quiz-options" id="quizOptions">
+            <!-- 퀴즈 보기 -->
+        </div>
+        <button id="quizNextBtn" class="quiz-next-btn" onclick="nextQuiz()">
+            다음 문제 ➔
+        </button>
+    </div>
+</main>
+
+<!-- 하단 재생 상태 플로팅 바 -->
+<div id="floatingBar" class="bottom-floating-bar" style="display: none;">
+    <span class="floating-speaker">🔊</span>
+    <span id="floatingText">재생 중...</span>
+    <button style="background:none; border:none; color:#AAA; cursor:pointer; font-size:1.1rem;" onclick="stopAudio()">✕</button>
+</div>
+
+<!-- 단어 데이터 로드 -->
+<script src="words.js"></script>
+
+<script>
+// 전역 상태
+let currentDomain = 0;
+let currentView = 'table';
+let currentSpeed = 1.0;
+let filteredWords = [];
+let isAutoPlaying = false;
+let autoPlayIndex = 0;
+let activeSpeakerBtn = null;
+let currentAudio = null;
+
+// 원어민 오디오 (MP3) 재생 함수
+function playNativeAudioFile(num, lang, onEndCallback = null) {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+    }
+
+    const item = WORDS_DATA.find(w => w.num === num);
+    if (!item) return;
+
+    let wordText = '';
+    if (lang === 'cn') wordText = item.chinese.native;
+    else if (lang === 'vn') wordText = item.vietnamese.native;
+    else if (lang === 'ph') wordText = item.filipino.native;
+
+    showFloatingBar(wordText, lang);
+
+    const audioPath = `audio/${num}_${lang}.mp3`;
+    const audio = new Audio(audioPath);
+    currentAudio = audio;
+    audio.playbackRate = currentSpeed;
+
+    audio.onended = () => {
+        hideFloatingBar();
+        if (activeSpeakerBtn) {
+            activeSpeakerBtn.classList.remove('active');
+            activeSpeakerBtn = null;
+        }
+        if (onEndCallback) onEndCallback();
+    };
+
+    audio.onerror = () => {
+        console.warn(`오디오 로드 실패 (${audioPath}), 브라우저 TTS로 대체 시도합니다.`);
+        playTtsFallback(wordText, lang, () => {
+            hideFloatingBar();
+            if (activeSpeakerBtn) {
+                activeSpeakerBtn.classList.remove('active');
+                activeSpeakerBtn = null;
+            }
+            if (onEndCallback) onEndCallback();
+        });
+    };
+
+    audio.play().catch(e => {
+        console.log("Audio play error, fallback to TTS:", e);
+        playTtsFallback(wordText, lang, () => {
+            hideFloatingBar();
+            if (activeSpeakerBtn) {
+                activeSpeakerBtn.classList.remove('active');
+                activeSpeakerBtn = null;
+            }
+            if (onEndCallback) onEndCallback();
+        });
+    });
+}
+
+// 브라우저 TTS Fallback (MP3 로드 불가 시 예비용)
+function playTtsFallback(text, languageCode, onEnd) {
+    if (!('speechSynthesis' in window)) {
+        if (onEnd) onEnd();
+        return;
+    }
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    const langMap = { 'cn': 'zh-CN', 'vn': 'vi-VN', 'ph': 'tl-PH', 'ko': 'ko-KR' };
+    u.lang = langMap[languageCode] || languageCode;
+    u.rate = currentSpeed;
+    u.onend = onEnd;
+    u.onerror = onEnd;
+    window.speechSynthesis.speak(u);
+}
+
+// 번호와 언어로 단어 재생
+function playWordByNum(num, lang, btn) {
+    if (activeSpeakerBtn) activeSpeakerBtn.classList.remove('active');
+    activeSpeakerBtn = btn;
+    if (btn) btn.classList.add('active');
+
+    playNativeAudioFile(num, lang);
+}
+
+function stopAudio() {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+    }
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+    }
+    isAutoPlaying = false;
+    const btn = document.getElementById('autoPlayBtn');
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶ 현재 목록 연속 듣기';
+    hideFloatingBar();
+    if (activeSpeakerBtn) {
+        activeSpeakerBtn.classList.remove('active');
+        activeSpeakerBtn = null;
+    }
+}
+
+function showFloatingBar(text, lang) {
+    const bar = document.getElementById('floatingBar');
+    const langNames = { 'cn': '🇨🇳 중국어', 'vn': '🇻🇳 베트남어', 'ph': '🇵🇭 필리핀어', 'ko': '🇰🇷 한국어' };
+    document.getElementById('floatingText').textContent = `원어민 발음 재생 중: ${text} (${langNames[lang] || lang})`;
+    bar.style.display = 'flex';
+}
+
+function hideFloatingBar() {
+    document.getElementById('floatingBar').style.display = 'none';
+}
+
+// 연속 듣기 (중국어 -> 베트남어 -> 필리핀어)
+function toggleAutoPlay() {
+    if (isAutoPlaying) {
+        stopAudio();
+        return;
+    }
+
+    if (filteredWords.length === 0) return;
+
+    isAutoPlaying = true;
+    autoPlayIndex = 0;
+    const btn = document.getElementById('autoPlayBtn');
+    btn.classList.add('playing');
+    btn.innerHTML = '⏸ 연속 듣기 일시정지';
+
+    playNextInAuto();
+}
+
+function playNextInAuto() {
+    if (!isAutoPlaying || autoPlayIndex >= filteredWords.length) {
+        stopAudio();
+        return;
+    }
+
+    const item = filteredWords[autoPlayIndex];
+    playNativeAudioFile(item.num, 'cn', () => {
+        if (!isAutoPlaying) return;
+        setTimeout(() => {
+            playNativeAudioFile(item.num, 'vn', () => {
+                if (!isAutoPlaying) return;
+                setTimeout(() => {
+                    playNativeAudioFile(item.num, 'ph', () => {
+                        if (!isAutoPlaying) return;
+                        autoPlayIndex++;
+                        setTimeout(playNextInAuto, 800);
+                    });
+                }, 400);
+            });
+        }, 400);
+    });
+}
+
+function setSpeed(spd) {
+    currentSpeed = spd;
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+        btn.classList.toggle('active', parseFloat(btn.textContent) === spd);
+    });
+    if (currentAudio) {
+        currentAudio.playbackRate = spd;
+    }
+}
+
+// 뷰 전환
+function switchView(viewName) {
+    currentView = viewName;
+    document.querySelectorAll('.mode-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', (viewName === 'table' && idx === 0) || (viewName === 'cards' && idx === 1) || (viewName === 'quiz' && idx === 2));
+    });
+
+    document.getElementById('tableView').style.display = viewName === 'table' ? 'block' : 'none';
+    document.getElementById('cardsView').style.display = viewName === 'cards' ? 'grid' : 'none';
+    document.getElementById('quizView').style.display = viewName === 'quiz' ? 'block' : 'none';
+
+    if (viewName === 'quiz') {
+        initQuiz();
+    }
+}
+
+// 필터링
+function filterDomain(dId) {
+    currentDomain = dId;
+    document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === dId);
+    });
+    applyFilter();
+}
+
+function handleSearch() {
+    applyFilter();
+}
+
+function applyFilter() {
+    if (typeof WORDS_DATA === 'undefined') return;
+
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    
+    filteredWords = WORDS_DATA.filter(item => {
+        const matchDomain = currentDomain === 0 || item.domainId === currentDomain;
+        if (!matchDomain) return false;
+
+        if (!q) return true;
+
+        const str = [
+            item.num,
+            item.korean.word,
+            item.korean.meaning,
+            item.chinese.native,
+            item.chinese.phonetic,
+            item.chinese.pronunciation,
+            item.vietnamese.native,
+            item.vietnamese.pronunciation,
+            item.filipino.native,
+            item.filipino.pronunciation
+        ].join(' ').toLowerCase();
+
+        return str.includes(q);
+    });
+
+    document.getElementById('resultCount').textContent = `표시 중: ${filteredWords.length}개 단어`;
+    renderTable();
+    renderCards();
+}
+
+// 테이블 렌더링
+function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+
+    filteredWords.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="col-num">${item.num}</td>
+            <td class="col-ko">
+                <div class="ko-word">${escapeHtml(item.korean.word)}</div>
+                <div class="ko-meaning">${escapeHtml(item.korean.meaning || '')}</div>
+            </td>
+            <td class="col-lang">
+                <div class="lang-cell">
+                    <div class="lang-text-group">
+                        <span class="native-text">${escapeHtml(item.chinese.native)}</span>
+                        ${item.chinese.phonetic ? `<span class="phonetic-text">${escapeHtml(item.chinese.phonetic)}</span>` : ''}
+                        <span class="pron-badge">${item.chinese.pronunciation ? '· ' + escapeHtml(item.chinese.pronunciation) : ''}</span>
+                    </div>
+                    <button class="speak-btn" title="중국어 원어민 발음" onclick="playWordByNum(${item.num}, 'cn', this)">🔊</button>
+                </div>
+            </td>
+            <td class="col-lang">
+                <div class="lang-cell">
+                    <div class="lang-text-group">
+                        <span class="native-text">${escapeHtml(item.vietnamese.native)}</span>
+                        <span class="pron-badge">${item.vietnamese.pronunciation ? '· ' + escapeHtml(item.vietnamese.pronunciation) : ''}</span>
+                    </div>
+                    <button class="speak-btn" title="베트남어 원어민 발음" onclick="playWordByNum(${item.num}, 'vn', this)">🔊</button>
+                </div>
+            </td>
+            <td class="col-lang">
+                <div class="lang-cell">
+                    <div class="lang-text-group">
+                        <span class="native-text">${escapeHtml(item.filipino.native)}</span>
+                        <span class="pron-badge">${item.filipino.pronunciation ? '· ' + escapeHtml(item.filipino.pronunciation) : ''}</span>
+                    </div>
+                    <button class="speak-btn" title="필리핀어 원어민 발음" onclick="playWordByNum(${item.num}, 'ph', this)">🔊</button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// 카드 렌더링
+function renderCards() {
+    const grid = document.getElementById('cardsView');
+    grid.innerHTML = '';
+
+    filteredWords.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'word-card';
+        card.innerHTML = `
+            <div class="card-header">
+                <span class="card-num">No. ${item.num}</span>
+                <span class="card-domain">${escapeHtml(item.domainName)}</span>
+            </div>
+            <div>
+                <div class="card-ko-title">${escapeHtml(item.korean.word)}</div>
+                <div class="card-ko-desc">${escapeHtml(item.korean.meaning || '')}</div>
+            </div>
+            <div class="card-lang-list">
+                <div class="card-lang-item">
+                    <div>
+                        <div style="font-size:0.75rem; color:#888;">🇨🇳 중국어</div>
+                        <div class="native-text">${escapeHtml(item.chinese.native)} <small style="color:#666; font-size:0.8rem;">(${escapeHtml(item.chinese.pronunciation || '')})</small></div>
+                    </div>
+                    <button class="speak-btn" onclick="playWordByNum(${item.num}, 'cn', this)">🔊</button>
+                </div>
+                <div class="card-lang-item">
+                    <div>
+                        <div style="font-size:0.75rem; color:#888;">🇻🇳 베트남어</div>
+                        <div class="native-text">${escapeHtml(item.vietnamese.native)} <small style="color:#666; font-size:0.8rem;">(${escapeHtml(item.vietnamese.pronunciation || '')})</small></div>
+                    </div>
+                    <button class="speak-btn" onclick="playWordByNum(${item.num}, 'vn', this)">🔊</button>
+                </div>
+                <div class="card-lang-item">
+                    <div>
+                        <div style="font-size:0.75rem; color:#888;">🇵🇭 필리핀어</div>
+                        <div class="native-text">${escapeHtml(item.filipino.native)} <small style="color:#666; font-size:0.8rem;">(${escapeHtml(item.filipino.pronunciation || '')})</small></div>
+                    </div>
+                    <button class="speak-btn" onclick="playWordByNum(${item.num}, 'ph', this)">🔊</button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// 퀴즈 기능
+let currentQuizItem = null;
+let currentQuizLang = 'cn';
+
+function initQuiz() {
+    nextQuiz();
+}
+
+function nextQuiz() {
+    document.getElementById('quizNextBtn').style.display = 'none';
+
+    const pool = filteredWords.length >= 4 ? filteredWords : WORDS_DATA;
+    currentQuizItem = pool[Math.floor(Math.random() * pool.length)];
+
+    const langs = ['cn', 'vn', 'ph'];
+    currentQuizLang = langs[Math.floor(Math.random() * langs.length)];
+    const langNames = { 'cn': '🇨🇳 중국어', 'vn': '🇻🇳 베트남어', 'ph': '🇵🇭 필리핀어' };
+
+    document.getElementById('quizDomainBadge').textContent = `${currentQuizItem.domainName} · ${langNames[currentQuizLang]} 문제`;
+
+    const options = [currentQuizItem];
+    while (options.length < 4) {
+        const rand = pool[Math.floor(Math.random() * pool.length)];
+        if (!options.some(o => o.num === rand.num)) {
+            options.push(rand);
+        }
+    }
+    options.sort(() => Math.random() - 0.5);
+
+    const optContainer = document.getElementById('quizOptions');
+    optContainer.innerHTML = '';
+    options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.textContent = `${opt.korean.word} ${opt.korean.meaning ? '(' + opt.korean.meaning + ')' : ''}`;
+        btn.onclick = () => selectQuizAnswer(btn, opt.num === currentQuizItem.num);
+        optContainer.appendChild(btn);
+    });
+
+    playQuizSound();
+}
+
+function playQuizSound() {
+    if (!currentQuizItem) return;
+    playNativeAudioFile(currentQuizItem.num, currentQuizLang);
+}
+
+function selectQuizAnswer(selectedBtn, isCorrect) {
+    const allBtns = document.querySelectorAll('.quiz-opt-btn');
+    allBtns.forEach(b => b.disabled = true);
+
+    if (isCorrect) {
+        selectedBtn.classList.add('correct');
+        selectedBtn.textContent = '⭕ ' + selectedBtn.textContent;
+    } else {
+        selectedBtn.classList.add('wrong');
+        selectedBtn.textContent = '❌ ' + selectedBtn.textContent;
+        allBtns.forEach(b => {
+            if (b.textContent.includes(currentQuizItem.korean.word)) {
+                b.classList.add('correct');
+            }
+        });
+    }
+
+    document.getElementById('quizNextBtn').style.display = 'block';
+}
+
+// 시작
+window.addEventListener('DOMContentLoaded', () => {
+    applyFilter();
+});
+</script>
+
+<div class="credit-watermark">Designed by Rami since 2026</div>
+
+</body>
+</html>
